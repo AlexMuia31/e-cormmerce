@@ -95,7 +95,7 @@ function RecommendedProducts({
 }) {
   return (
     <div className="recommended-products">
-      <h2 className="text-brand-navy font-source font-extrabold">
+      <h2 className="text-brand-navy font-playfair font-extrabold">
         Recommended Products
       </h2>
       <Suspense fallback={<div>Loading...</div>}>
