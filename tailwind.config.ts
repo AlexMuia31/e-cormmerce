@@ -1,13 +1,13 @@
 import type {Config} from 'tailwindcss';
 
-export default {
+export default <Config>{
   darkMode: 'class',
   content: ['./app/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {
       colors: {
         brand: {
-          navy: '#1A2A3A',
+          navy: '#D4AF37',
           cream: '#F5f2EA',
           gold: '#C3A343',
           gray: '#8C8C8C',
@@ -20,4 +20,4 @@ export default {
     },
   },
   plugins: [],
-} satisfies Config;
+};
