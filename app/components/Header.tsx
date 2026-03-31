@@ -1,4 +1,4 @@
-import {Suspense, useState} from 'react';
+import {Suspense, useEffect, useState} from 'react';
 import {Await, NavLink, useAsyncValue} from 'react-router';
 import {
   type CartViewPayload,
@@ -29,19 +29,31 @@ export function Header({
   const [lastScrollY, setLastScrollY] = useState(0);
   const {type: asideType} = useAside();
 
+  useEffect(() => {
+    const root = document.documentElement;
+    root.style.setProperty(
+      '--announcement-height',
+      isScrolled ? '0px' : '40px',
+    );
+    root.style.setProperty('--header-height', isScrolled ? '60px' : '80px');
+    const handleScroll = () => {
+      if (asideType !== 'closed') {
+        setIsScrolled(true);
+        return;
+      }
+      const currentScrollY = window.scrollY;
+      setIsScrollingUp(currentScrollY < lastScrollY);
+      setIsScrolled(currentScrollY > 50);
+      setLastScrollY(currentScrollY);
+    };
+    window.addEventListener('scroll', handleScroll, {passive: true});
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY, asideType, isScrolled]);
+
   return (
-    <header className="header">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
-      </NavLink>
-      <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-        publicStoreDomain={publicStoreDomain}
-      />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
-    </header>
+    <div
+      className={`fixed w-full z-40 transition-transform duration-500 ease-in-out ${isScrollingUp && isScrolled && asideType === 'closed' ? '-translate-y-full' : 'translate-y-0'}`}
+    ></div>
   );
 }
 
