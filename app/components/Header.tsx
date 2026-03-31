@@ -1,3 +1,5 @@
+/* eslint-disable eslint-comments/disable-enable-pair */
+/* eslint-disable jsx-a11y/heading-has-content */
 import {Suspense, useEffect, useState} from 'react';
 import {Await, NavLink, useAsyncValue} from 'react-router';
 import {
@@ -53,7 +55,37 @@ export function Header({
   return (
     <div
       className={`fixed w-full z-40 transition-transform duration-500 ease-in-out ${isScrollingUp && isScrolled && asideType === 'closed' ? '-translate-y-full' : 'translate-y-0'}`}
-    ></div>
+    >
+      {/* announcement Bar */}
+      <div
+        className={`overflow-hidden transition-all duration-500 ease-in-out bg-brand-navy text-white ${isScrolled ? 'max-h-0' : 'max-h-12'}`}
+      >
+        <div className="container mx-auto text-center py-2 px-4">
+          <p className="font-source text-[13px] leading-tight sm:text-sm font-light tracking-wider">
+            Complimentary Shipping on Orders above $50
+          </p>
+        </div>
+      </div>
+      {/* Main Header */}
+      <header
+        className={`transition-all duration-500 ease-in-out border-b ${isScrolled ? 'bg-white/80 backdrop-blur-lg shadow-sm border-transparent' : 'bg-white border-gray-100'}`}
+      >
+        <div className="container mx-auto">
+          <div
+            className={`hidden max-[550px]:block text-center border-b border-gray-100 transition-all duration-300 ease-in-out ${isScrolled ? 'py-2' : 'py-4'}`}
+          >
+            <NavLink
+              prefetch="intent"
+              to="/"
+              className="font-playfair text-2xl tracking-normal inline-block"
+            >
+              <h1 className="font-medium my-0">Mwikali</h1>
+            </NavLink>
+          </div>
+          <div></div>
+        </div>
+      </header>
+    </div>
   );
 }
 
