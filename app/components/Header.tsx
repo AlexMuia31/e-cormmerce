@@ -82,7 +82,8 @@ export function Header({
               <h1 className="font-medium my-0">Mwikali</h1>
             </NavLink>
           </div>
-          <div></div>
+          {/* Header Content */}
+          <div className="flex flex-items-center"></div>
         </div>
       </header>
     </div>
