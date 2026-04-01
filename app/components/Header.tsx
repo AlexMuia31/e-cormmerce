@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-key */
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable jsx-a11y/heading-has-content */
 import {Suspense, useEffect, useState} from 'react';
@@ -132,42 +133,37 @@ export function HeaderMenu({
   const mobileClassName = 'flex flex-col px-6';
 
   return (
-    <nav className={className} role="navigation">
-      {viewport === 'mobile' && (
-        <NavLink
-          end
-          onClick={close}
-          prefetch="intent"
-          style={activeLinkStyle}
-          to="/"
-        >
-          Home
-        </NavLink>
-      )}
-      {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
-        if (!item.url) return null;
+    <nav
+      className={viewport === 'desktop' ? desktopClassName : mobileClassName}
+      role="navigation"
+    >
+      {viewport === 'mobile' && <></>}
+      {viewport === 'desktop' &&
+        //Desktop menu
+        menu?.items.map((item) => {
+          if (!item.url) return null;
+          const url =
+            item.url.includes('myshopify.com') ||
+            item.url.includes(publicStoreDomain) ||
+            item.url.includes(primaryDomainUrl)
+              ? new URL(item.url).pathname
+              : item.url;
 
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
-        return (
-          <NavLink
-            className="header-menu-item"
-            end
-            key={item.id}
-            onClick={close}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
-        );
-      })}
+          return (
+            <NavLink
+              className={({isActive}) =>
+                `${baseClassName} ${isActive ? 'text-brand-gold' : 'text-brand-navy'}`
+              }
+              end
+              key={item.id}
+              to={url}
+              prefetch="intent"
+              onClick={close}
+            >
+              {item.title}
+            </NavLink>
+          );
+        })}
     </nav>
   );
 }
