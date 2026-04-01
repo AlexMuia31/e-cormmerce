@@ -125,6 +125,12 @@ export function HeaderMenu({
   const className = `header-menu-${viewport}`;
   const {close} = useAside();
 
+  const baseClassName =
+    "transition-all duration-200 hover:text-brand-gold font-source relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-brand-gold after:transition-all after:duration-300 hover:after:w-full";
+  const desktopClassName =
+    'flex items-center justify-center space-x-12 text-sm uppercase tracking-wider';
+  const mobileClassName = 'flex flex-col px-6';
+
   return (
     <nav className={className} role="navigation">
       {viewport === 'mobile' && (
