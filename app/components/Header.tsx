@@ -9,6 +9,7 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
+import {Menu} from 'lucide-react';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -83,7 +84,27 @@ export function Header({
             </NavLink>
           </div>
           {/* Header Content */}
-          <div className="flex flex-items-center"></div>
+          <div
+            className={`flex flex-center justify-between px-4 sm:px-6 transition-all duration-300 ease-in-out ${isScrolled ? 'py-3 sm:py-4' : ''}`}
+          >
+            <div className="lg:hidden">
+              <HeaderMenuMobileToggle />
+            </div>
+            <NavLink
+              prefetch="intent"
+              to=""
+              className={`font-playfair tracking-wider text-center max-[550px]:hidden absolute left-1/2 -translate-x-0.5 lg:static lg:translate-x-0 lg:text-left transition-all duration-300 ease-in-out ${isScrolled ? 'text-xl sm:text-2xl' : 'text-2xl sm:text-[28px]'}`}
+            >
+              <h1 className="font-medium">Mwikali</h1>
+            </NavLink>
+            {/* Desktop Navigation */}
+            <HeaderMenu
+              menu={menu}
+              primaryDomainUrl={header.shop.primaryDomain.url}
+              viewport="desktop"
+              publicStoreDomain={publicStoreDomain}
+            />
+          </div>
         </div>
       </header>
     </div>
@@ -169,10 +190,10 @@ function HeaderMenuMobileToggle() {
   const {open} = useAside();
   return (
     <button
-      className="header-menu-mobile-toggle reset"
+      className="p-2 -ml-2 hover:text-brand-gold transition-colors duration-200"
       onClick={() => open('mobile')}
     >
-      <h3>☰</h3>
+      <Menu className="w-6 h-6" />
     </button>
   );
 }
