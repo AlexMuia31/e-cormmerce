@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-key */
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable jsx-a11y/heading-has-content */
 import {Suspense, useEffect, useState} from 'react';
@@ -10,7 +9,7 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
-import {Menu} from 'lucide-react';
+import {Menu, User} from 'lucide-react';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -137,7 +136,49 @@ export function HeaderMenu({
       className={viewport === 'desktop' ? desktopClassName : mobileClassName}
       role="navigation"
     >
-      {viewport === 'mobile' && <></>}
+      {viewport === 'mobile' && (
+        <>
+          {/* Mobile Navigation Link */}
+          <div className="space-y-6 py-4">
+            {menu?.items.map((item) => {
+              if (!item.url) return null;
+              const url =
+                item.url.includes('myshopify.com') ||
+                item.url.includes(publicStoreDomain) ||
+                item.url.includes(primaryDomainUrl)
+                  ? new URL(item.url).pathname
+                  : item.url;
+
+              return (
+                <NavLink
+                  className={({isActive}) =>
+                    `${baseClassName} text-lg py-2 ${isActive ? 'text-brand-gold' : 'text-brand-navy'}`
+                  }
+                  end
+                  key={item.id}
+                  to={url}
+                  prefetch="intent"
+                  onClick={close}
+                >
+                  {item.title}
+                </NavLink>
+              );
+            })}
+          </div>
+          {/* mobile footer links */}
+          <div className="mt-auto border-t border-gray-100 py-6">
+            <div className="space-y-4">
+              <NavLink
+                to="/account"
+                className="flex items-center space-x-2 text-brand-navy hover:text-brand-gold"
+              >
+                <User className="w-5 h-6" />
+                <span className="font-source text-base">Account</span>
+              </NavLink>
+            </div>
+          </div>
+        </>
+      )}
       {viewport === 'desktop' &&
         //Desktop menu
         menu?.items.map((item) => {
