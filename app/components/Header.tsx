@@ -9,7 +9,7 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
-import {Menu, User} from 'lucide-react';
+import {Menu, Search, User} from 'lucide-react';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -152,7 +152,7 @@ export function HeaderMenu({
               return (
                 <NavLink
                   className={({isActive}) =>
-                    `${baseClassName} text-lg py-2 ${isActive ? 'text-brand-gold' : 'text-brand-navy'}`
+                    `${baseClassName} text-lg py-2 block ${isActive ? 'text-brand-gold' : 'text-brand-navy'}`
                   }
                   end
                   key={item.id}
@@ -175,6 +175,16 @@ export function HeaderMenu({
                 <User className="w-5 h-6" />
                 <span className="font-source text-base">Account</span>
               </NavLink>
+              <button
+                onClick={() => {
+                  close();
+                }}
+                // todo: add search logic
+                className="flex items-center space-x-2 text-brand-navy hover:text-brand-gold w-full text-left"
+              >
+                <Search className="w-5 h-5" />
+                <span className="font-source text-base">Search</span>
+              </button>
             </div>
           </div>
         </>
