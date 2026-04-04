@@ -85,7 +85,7 @@ export function Header({
           </div>
           {/* Header Content */}
           <div
-            className={`flex flex-center justify-between px-4 sm:px-6 transition-all duration-300 ease-in-out ${isScrolled ? 'py-3 sm:py-4' : ''}`}
+            className={`flex flex-center justify-between px-4 sm:px-6 transition-all duration-300 ease-in-out ${isScrolled ? 'py-3 sm:py-4' : 'py-4 sm:py-6'}`}
           >
             <div className="lg:hidden">
               <HeaderMenuMobileToggle />
@@ -98,13 +98,17 @@ export function Header({
               <h1 className="font-medium">Mwikali</h1>
             </NavLink>
             {/* Desktop Navigation */}
-            <div className="hidden lg:block">
+            <div className="hidden lg:block flex-1 px-12">
               <HeaderMenu
                 menu={menu}
                 primaryDomainUrl={header.shop.primaryDomain.url}
                 viewport="desktop"
                 publicStoreDomain={publicStoreDomain}
               />
+            </div>
+            {/* CTAS */}
+            <div>
+              <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
             </div>
           </div>
         </div>
@@ -226,17 +230,22 @@ function HeaderCtas({
   cart,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
-    <nav className="header-ctas" role="navigation">
-      <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
-        <Suspense fallback="Sign in">
-          <Await resolve={isLoggedIn} errorElement="Sign in">
-            {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
-          </Await>
-        </Suspense>
-      </NavLink>
+    <nav
+      className="flex items-center space-x-2 sm:space-x-3 lg:space-x-8 "
+      role="navigation"
+    >
       <SearchToggle />
-      <CartToggle cart={cart} />
+      <NavLink
+        prefetch="intent"
+        to="/account"
+        className="hover:text-brand-gold transition-all duration-200 p-2 relative after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:w-0 after:h-px after:bg-brand-gold after:transition-all after:duration-300 hover:after:w-full"
+      >
+        <span className="sr-only">Account</span>
+        <User className="w-5 h-5" />
+      </NavLink>
+      <div className="pl-0 sm:pl-2">
+        <CartToggle cart={cart} />
+      </div>
     </nav>
   );
 }
@@ -256,8 +265,11 @@ function HeaderMenuMobileToggle() {
 function SearchToggle() {
   const {open} = useAside();
   return (
-    <button className="reset" onClick={() => open('search')}>
-      Search
+    <button
+      className="p-2 hover:text-brand-gold transition-colors duration-200 relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-brand-gold after:transition-all after:duration-300 hover:after:w-full"
+      onClick={() => open('search')}
+    >
+      <Search className="w-6 h-6" />
     </button>
   );
 }
