@@ -98,12 +98,14 @@ export function Header({
               <h1 className="font-medium">Mwikali</h1>
             </NavLink>
             {/* Desktop Navigation */}
-            <HeaderMenu
-              menu={menu}
-              primaryDomainUrl={header.shop.primaryDomain.url}
-              viewport="desktop"
-              publicStoreDomain={publicStoreDomain}
-            />
+            <div className="hidden lg:block">
+              <HeaderMenu
+                menu={menu}
+                primaryDomainUrl={header.shop.primaryDomain.url}
+                viewport="desktop"
+                publicStoreDomain={publicStoreDomain}
+              />
+            </div>
           </div>
         </div>
       </header>
@@ -129,7 +131,7 @@ export function HeaderMenu({
     "transition-all duration-200 hover:text-brand-gold font-source relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:bg-brand-gold after:transition-all after:duration-300 hover:after:w-full";
   const desktopClassName =
     'flex items-center justify-center space-x-12 text-sm uppercase tracking-wider';
-  const mobileClassName = 'flex flex-col px-6';
+  const mobileClassName = 'flex flex-col px-6 pt-20';
 
   return (
     <nav
