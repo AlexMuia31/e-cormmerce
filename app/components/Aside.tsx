@@ -36,21 +36,33 @@ export function Aside({
   const expanded = type === activeType;
 
   useEffect(() => {
-    const abortController = new AbortController();
-
     if (expanded) {
-      document.addEventListener(
-        'keydown',
-        function handler(event: KeyboardEvent) {
-          if (event.key === 'Escape') {
-            close();
-          }
-        },
-        {signal: abortController.signal},
-      );
+      return;
     }
-    return () => abortController.abort();
-  }, [close, expanded]);
+    const scrollY = window.scrollY;
+    const originalStyle = {
+      overflow: document.body.style.overflow,
+      position: document.body.style.position,
+      top: document.body.style.top,
+      width: document.body.style.width,
+      height: document.body.style.height,
+    };
+    document.body.style.overflow = 'hidden';
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.width = '100%';
+    document.body.style.height = '100%';
+
+    return () => {
+      document.body.style.overflow = originalStyle.overflow;
+      document.body.style.position = originalStyle.position;
+      document.body.style.top = originalStyle.top;
+      document.body.style.width = originalStyle.width;
+      document.body.style.height = originalStyle.height;
+
+      window.scrollTo(0, scrollY);
+    };
+  }, [expanded]);
 
   return (
     <div
