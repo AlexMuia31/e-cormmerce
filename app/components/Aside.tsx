@@ -84,15 +84,7 @@ export function Aside({
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/30" />
       {/* aside panel */}
-      <aside>
-        <header>
-          <h3>{heading}</h3>
-          <button className="close reset" onClick={close} aria-label="Close">
-            &times;
-          </button>
-        </header>
-        <main>{children}</main>
-      </aside>
+      <aside></aside>
     </div>
   );
 }
