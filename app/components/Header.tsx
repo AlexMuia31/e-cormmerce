@@ -9,7 +9,7 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
-import {Menu, Search, User} from 'lucide-react';
+import {Menu, Search, ShoppingBag, User} from 'lucide-react';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -279,21 +279,25 @@ function CartBadge({count}: {count: number | null}) {
   const {publish, shop, cart, prevCart} = useAnalytics();
 
   return (
-    <a
-      href="/cart"
-      onClick={(e) => {
-        e.preventDefault();
+    <button
+      className="relative p-2 hover:text-brand-gold transition-colors duration-200"
+      onClick={() => {
         open('cart');
         publish('cart_viewed', {
           cart,
           prevCart,
           shop,
           url: window.location.href || '',
-        } as CartViewPayload);
+        });
       }}
     >
-      Cart {count === null ? <span>&nbsp;</span> : count}
-    </a>
+      <ShoppingBag className="w-5 h-5" />
+      {count !== null && (
+        <span className="absolute -top-1 -right-1 bg-brand-gold text-white rounded-full text-xs w-5 h-5 flex items-center justify-center">
+          {count > 9 ? "+9" : count}
+        </span>
+      )}
+    </button>
   );
 }
 
