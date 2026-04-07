@@ -5,6 +5,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+import type {CustomEventMap} from 'vite';
 
 type AsideType = 'search' | 'cart' | 'mobile' | 'closed';
 type AsideContextValue = {
@@ -64,13 +65,25 @@ export function Aside({
     };
   }, [expanded]);
 
+  useEffect(() => {
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') {
+        close();
+      }
+      document.addEventListener('keydown', handleEscape);
+      return () => document.removeEventListener('keydown', handleEscape);
+    }
+  });
+
   return (
     <div
       aria-modal
-      className={`overlay ${expanded ? 'expanded' : ''}`}
+      className={`fixed inset-0 z-50 transition-opacity duration-300 ease-in-out ${expanded ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
       role="dialog"
     >
-      <button className="close-outside" onClick={close} />
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/30" />
+      {/* aside panel */}
       <aside>
         <header>
           <h3>{heading}</h3>
@@ -108,4 +121,7 @@ export function useAside() {
     throw new Error('useAside must be used within an AsideProvider');
   }
   return aside;
+}
+function handleEscape(this: Document, ev: CustomEventMap): void {
+  throw new Error('Function not implemented.');
 }
