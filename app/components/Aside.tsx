@@ -1,3 +1,4 @@
+import {X} from 'lucide-react';
 import {
   createContext,
   type ReactNode,
@@ -5,7 +6,6 @@ import {
   useEffect,
   useState,
 } from 'react';
-import type {CustomEventMap} from 'vite';
 
 type AsideType = 'search' | 'cart' | 'mobile' | 'closed';
 type AsideContextValue = {
@@ -37,54 +37,45 @@ export function Aside({
   const expanded = type === activeType;
 
   useEffect(() => {
+    const abortController = new AbortController();
+
     if (expanded) {
-      return;
+      document.addEventListener(
+        'keydown',
+        function handler(event: KeyboardEvent) {
+          if (event.key === 'Escape') {
+            close();
+          }
+        },
+        {signal: abortController.signal},
+      );
     }
-    const scrollY = window.scrollY;
-    const originalStyle = {
-      overflow: document.body.style.overflow,
-      position: document.body.style.position,
-      top: document.body.style.top,
-      width: document.body.style.width,
-      height: document.body.style.height,
-    };
-    document.body.style.overflow = 'hidden';
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.width = '100%';
-    document.body.style.height = '100%';
-
-    return () => {
-      document.body.style.overflow = originalStyle.overflow;
-      document.body.style.position = originalStyle.position;
-      document.body.style.top = originalStyle.top;
-      document.body.style.width = originalStyle.width;
-      document.body.style.height = originalStyle.height;
-
-      window.scrollTo(0, scrollY);
-    };
-  }, [expanded]);
-
-  useEffect(() => {
-    function handleKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        close();
-      }
-      document.addEventListener('keydown', handleEscape);
-      return () => document.removeEventListener('keydown', handleEscape);
-    }
-  });
+    return () => abortController.abort();
+  }, [close, expanded]);
 
   return (
     <div
       aria-modal
-      className={`fixed inset-0 z-50 transition-opacity duration-300 ease-in-out ${expanded ? 'opacity-100' : 'pointer-events-none opacity-0'}`}
+      className={`overlay inset-0 z-[1000] transition-opacity duration-300 ease-in-out ${expanded ? 'expanded' : ''}`}
       role="dialog"
     >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/30" />
-      {/* aside panel */}
-      <aside></aside>
+      <button className="close-outside" onClick={close} />
+      <aside
+        className={`absolute top-0 right-0 h-dvh w-full max-w-md flex flex-col bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${
+          expanded ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <header className="flex items-center justify-between px-6 py-4 border-b border-gray-100 shrink-0">
+          <h3>{heading}</h3>
+          <button
+            onClick={close}
+            className="p-2 -mr-2 text-gray-400 hover:text-gray-500 transition-colors duration-300"
+          >
+            <X className="w-5 h-5" />
+          </button>
+        </header>
+        <main className="flex-1 overflow-y-auto px-6 py-4">{children}</main>
+      </aside>
     </div>
   );
 }
@@ -113,7 +104,4 @@ export function useAside() {
     throw new Error('useAside must be used within an AsideProvider');
   }
   return aside;
-}
-function handleEscape(this: Document, ev: CustomEventMap): void {
-  throw new Error('Function not implemented.');
 }
