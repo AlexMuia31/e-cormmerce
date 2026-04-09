@@ -1,7 +1,7 @@
 import {CartForm, type OptimisticCartLine} from '@shopify/hydrogen';
 import type {CartLineUpdateInput} from '@shopify/hydrogen/storefront-api-types';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
-import {Loader2} from 'lucide-react';
+import {Loader2, Minus, Plus} from 'lucide-react';
 import {useFetcher} from 'react-router';
 import {useEffect, useState} from 'react';
 
@@ -30,7 +30,7 @@ export function CartLineQuantity({line}: {line: CartLine}) {
             value={prevQuantity}
             className="w-8 h-8 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-navy focus:ring-offset-1 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors duration-150"
           >
-            <span className="text-lg leading-none">−</span>
+            <Minus className="w-4 h-4" />
           </button>
         </CartLineUpdateButton>
 
@@ -46,7 +46,7 @@ export function CartLineQuantity({line}: {line: CartLine}) {
             disabled={!!isOptimistic}
             className="w-8 h-8 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-navy focus:ring-offset-1 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors duration-150"
           >
-            <span className="text-lg leading-none">+</span>
+            <Plus className="w-4 h-4" />
           </button>
         </CartLineUpdateButton>
       </div>
