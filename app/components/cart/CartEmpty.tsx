@@ -16,12 +16,12 @@ export function CartEmpty({
       className="flex flex-col items-center justify-center text-center px-6 py-12 min-h-[60vh]"
     >
       {/* Icon */}
-      <div className="w-24 h-24 mb-6 rounded-full bg-gray-100 flex items-center justify-center">
+      <div className="w-24 h-24 mb-6 rounded-full bg-brand-cream flex items-center justify-center">
         <ShoppingBag className="w-10 h-10 text-gray-400" strokeWidth={1.5} />
       </div>
 
       {/* Heading */}
-      <h3 className="text-xl font-semibold text-gray-900 mb-2">
+      <h3 className="text-xl font-playfair text-gray-900 mb-2">
         Your cart is empty
       </h3>
 
