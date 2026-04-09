@@ -601,6 +601,7 @@ button.reset:hover:not(:has(> *)) {
   --color-brand-cream: #f5f2ea; /* warm cream (unchanged) */
   --color-brand-gold: #d4af37; /* true metallic gold */
   --color-brand-gray: #6c757d; /* neutral medium gray */
+  --color-brand-navyLight: #2a3a4a; /* neutral medium gray */
 
   /* 🔤 Fonts */
   --font-playfair: 'Playfair Display', serif;

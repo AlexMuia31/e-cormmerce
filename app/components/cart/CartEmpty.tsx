@@ -33,13 +33,32 @@ export function CartEmpty({
 
       {/* CTA Button */}
       <Link
-        to="/collections"
+        to="/collections/all"
         onClick={close}
         prefetch="viewport"
         className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-brand-navy hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-colors duration-200"
       >
         Continue shopping →
       </Link>
+
+      {/* Contact Information Section */}
+      <div className="mt-8 pt-6 border-t border-gray-200 w-full max-w-xs">
+        <p className="text-sm text-gray-500 mb-2">Need assistance?</p>
+        <p className="text-sm text-gray-500">
+          Email us at{' '}
+          <a
+            href="mailto:support@example.com"
+            className="text-brand-navy hover:underline"
+          >
+            support@example.com
+          </a>{' '}
+          or call{' '}
+          <a href="tel:+1234567890" className="text-brand-navy hover:underline">
+            (123) 456-7890
+          </a>
+        </p>
+        <p className="text-xs text-gray-400 mt-2">Mon–Fri, 9am–6pm (EST)</p>
+      </div>
     </div>
   );
 }
