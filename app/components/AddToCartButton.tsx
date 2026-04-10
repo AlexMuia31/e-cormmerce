@@ -3,6 +3,7 @@
 import {type FetcherWithComponents} from 'react-router';
 import {CartForm, type OptimisticCartLineInput} from '@shopify/hydrogen';
 import {useEffect, useState, useRef} from 'react';
+import {Loader2, ShoppingBag} from 'lucide-react';
 
 export function AddToCartButton({
   analytics,
@@ -67,8 +68,25 @@ export function AddToCartButton({
               type="submit"
               onClick={onClick}
               disabled={disabled ?? isSubmitting}
+              className={`w-full text-white font-source text-base transition-all duration-300 ease-in-out flex items-center
+                 justify-center gap-3 relative overflow-hidden before:content-[''] before:absolute before:top-0 before:left-0 
+                 before:w-full before:h-full before:bg-white/10 before:-translate-x-full hover:before:translate-x-full 
+                 before:transition-transform before:duration-700 disabled:before:hidden tracking-wider py-5 px-8 bg-brand-navy
+                  hover:bg-brand-navyLight disabled:bg-brand-gray disabled:cursor-not-allowed`}
             >
-              {isSubmitting ? 'Adding...' : addedToCart ? 'Added ✓' : children}
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-5 h-5 animate-spin" />
+                  <span className="font-medium">Adding...</span>
+                </>
+              ) : addedToCart ? (
+                'Added ✓'
+              ) : (
+                <>
+                  <ShoppingBag className="w-5 h-5" />
+                  <span className="font-medium">{children}</span>
+                </>
+              )}
             </button>
           </>
         );
