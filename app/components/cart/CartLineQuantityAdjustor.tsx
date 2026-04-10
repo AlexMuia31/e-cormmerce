@@ -1,7 +1,7 @@
 import {CartForm, type OptimisticCartLine} from '@shopify/hydrogen';
 import type {CartLineUpdateInput} from '@shopify/hydrogen/storefront-api-types';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
-import {Loader2, Minus, Plus} from 'lucide-react';
+import {Delete, Loader2, Minus, Plus} from 'lucide-react';
 import {useFetcher} from 'react-router';
 import {useEffect, useState} from 'react';
 
@@ -68,20 +68,47 @@ function CartLineRemoveButton({
   lineIds: string[];
   disabled: boolean;
 }) {
+  // Optional: loading state for better UX
+  const [removing, setRemoving] = useState(false);
+
   return (
     <CartForm
-      fetcherKey={getUpdateKey(lineIds)}
+      fetcherKey={`remove-${lineIds.join('-')}`} // unique key for removal
       route="/cart"
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{lineIds}}
     >
-      <button
-        disabled={disabled}
-        type="submit"
-        className="ml-2 text-sm text-red-600 hover:text-red-800 underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 rounded px-1 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:no-underline disabled:hover:text-red-600 transition-colors duration-150"
-      >
-        Remove
-      </button>
+      {(fetcher) => {
+        // Show loading spinner while removing
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        useEffect(() => {
+          if (fetcher.state === 'submitting') setRemoving(true);
+          if (fetcher.state === 'idle') setRemoving(false);
+        }, [fetcher.state]);
+
+        if (removing) {
+          return (
+            <div className="relative inline-flex items-center justify-center ml-2">
+              <div className="opacity-50">
+                <Delete className="w-4 h-4 text-red-600" />
+              </div>
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Loader2 className="w-3 h-3 animate-spin text-brand-gold" />
+              </div>
+            </div>
+          );
+        }
+
+        return (
+          <button
+            disabled={disabled}
+            type="submit"
+            className="ml-2 text-sm text-red-600 hover:text-red-800 underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 rounded px-1 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:no-underline disabled:hover:text-red-600 transition-colors duration-150"
+          >
+            <Delete className="w-4 h-4" />
+          </button>
+        );
+      }}
     </CartForm>
   );
 }
