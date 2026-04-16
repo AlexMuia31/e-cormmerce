@@ -55,7 +55,7 @@ export function CartSummary({ cart, layout }: CartSummaryProps) {
       </div>
 
       {/* Divider before checkout */}
-      <div className="my-5 h-px bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100" />
+      <div className="my-5 h-px bg-linear-to-r from-gray-100 via-gray-200 to-gray-100" />
 
       {/* Checkout button */}
       <CartCheckoutActions checkoutUrl={cart?.checkoutUrl} />
