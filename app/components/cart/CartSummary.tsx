@@ -4,6 +4,7 @@ import {CartForm, Money, type OptimisticCart} from '@shopify/hydrogen';
 import {useEffect, useRef} from 'react';
 import {useFetcher} from 'react-router';
 import {CartDiscounts} from './CartDiscounts';
+import {CartGiftCard} from './CartGiftCards';
 
 type CartSummaryProps = {
   cart: OptimisticCart<CartApiQueryFragment | null>;
@@ -79,94 +80,5 @@ function CartCheckoutActions({checkoutUrl}: {checkoutUrl?: string}) {
       </a>
       <br />
     </div>
-  );
-}
-
-function CartGiftCard({
-  giftCardCodes,
-}: {
-  giftCardCodes: CartApiQueryFragment['appliedGiftCards'] | undefined;
-}) {
-  const giftCardCodeInput = useRef<HTMLInputElement>(null);
-  const giftCardAddFetcher = useFetcher({key: 'gift-card-add'});
-
-  useEffect(() => {
-    if (giftCardAddFetcher.data) {
-      giftCardCodeInput.current!.value = '';
-    }
-  }, [giftCardAddFetcher.data]);
-
-  return (
-    <div>
-      {giftCardCodes && giftCardCodes.length > 0 && (
-        <dl>
-          <dt>Applied Gift Card(s)</dt>
-          {giftCardCodes.map((giftCard) => (
-            <RemoveGiftCardForm key={giftCard.id} giftCardId={giftCard.id}>
-              <div className="cart-discount">
-                <code>***{giftCard.lastCharacters}</code>
-                &nbsp;
-                <Money data={giftCard.amountUsed} />
-                &nbsp;
-                <button type="submit">Remove</button>
-              </div>
-            </RemoveGiftCardForm>
-          ))}
-        </dl>
-      )}
-
-      <AddGiftCardForm fetcherKey="gift-card-add">
-        <div>
-          <input
-            type="text"
-            name="giftCardCode"
-            placeholder="Gift card code"
-            ref={giftCardCodeInput}
-          />
-          &nbsp;
-          <button type="submit" disabled={giftCardAddFetcher.state !== 'idle'}>
-            Apply
-          </button>
-        </div>
-      </AddGiftCardForm>
-    </div>
-  );
-}
-
-function AddGiftCardForm({
-  fetcherKey,
-  children,
-}: {
-  fetcherKey?: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <CartForm
-      fetcherKey={fetcherKey}
-      route="/cart"
-      action={CartForm.ACTIONS.GiftCardCodesAdd}
-    >
-      {children}
-    </CartForm>
-  );
-}
-
-function RemoveGiftCardForm({
-  giftCardId,
-  children,
-}: {
-  giftCardId: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <CartForm
-      route="/cart"
-      action={CartForm.ACTIONS.GiftCardCodesRemove}
-      inputs={{
-        giftCardCodes: [giftCardId],
-      }}
-    >
-      {children}
-    </CartForm>
   );
 }
