@@ -2,7 +2,6 @@ import {CartForm, type OptimisticCartLine} from '@shopify/hydrogen';
 import type {CartLineUpdateInput} from '@shopify/hydrogen/storefront-api-types';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {Delete, Loader2, Minus, Plus, Trash2} from 'lucide-react';
-import {useFetcher} from 'react-router';
 import {useEffect, useState} from 'react';
 
 /**
