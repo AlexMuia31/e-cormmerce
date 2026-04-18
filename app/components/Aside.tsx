@@ -28,10 +28,12 @@ export function Aside({
   children,
   heading,
   type,
+  width = 'max-w-md', // default for backward compatibility
 }: {
   children?: React.ReactNode;
   type: AsideType;
   heading: React.ReactNode;
+  width?: string;
 }) {
   const {type: activeType, close} = useAside();
   const expanded = type === activeType;
@@ -56,12 +58,12 @@ export function Aside({
   return (
     <div
       aria-modal
-      className={`overlay inset-0 z-[1000] transition-opacity duration-300 ease-in-out ${expanded ? 'expanded' : ''}`}
+      className={`overlay inset-0 z-1000 transition-opacity duration-300 ease-in-out ${expanded ? 'expanded' : ''}`}
       role="dialog"
     >
       <button className="close-outside" onClick={close} />
       <aside
-        className={`absolute top-0 right-0 h-dvh w-full max-w-md flex flex-col bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${
+        className={`absolute top-0 right-0 h-dvh w-fit min-w-[320px] max-w-[90vw] flex flex-col bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${
           expanded ? 'translate-x-0' : 'translate-x-full'
         }`}
       >

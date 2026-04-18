@@ -1,7 +1,7 @@
 import {CartForm, type OptimisticCartLine} from '@shopify/hydrogen';
 import type {CartLineUpdateInput} from '@shopify/hydrogen/storefront-api-types';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
-import {Delete, Loader2, Minus, Plus} from 'lucide-react';
+import {Delete, Loader2, Minus, Plus, Trash2} from 'lucide-react';
 import {useFetcher} from 'react-router';
 import {useEffect, useState} from 'react';
 
@@ -28,7 +28,7 @@ export function CartLineQuantity({line}: {line: CartLine}) {
             disabled={quantity <= 1 || !!isOptimistic}
             name="decrease-quantity"
             value={prevQuantity}
-            className="w-8 h-8 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-navy focus:ring-offset-1 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors duration-150"
+            className="w-4 h-4 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-navy focus:ring-offset-1 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors duration-150"
           >
             <Minus className="w-4 h-4" />
           </button>
@@ -44,7 +44,7 @@ export function CartLineQuantity({line}: {line: CartLine}) {
             name="increase-quantity"
             value={nextQuantity}
             disabled={!!isOptimistic}
-            className="w-8 h-8 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-navy focus:ring-offset-1 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors duration-150"
+            className="w-4 h-4 rounded-full border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 hover:border-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-navy focus:ring-offset-1 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:bg-white transition-colors duration-150"
           >
             <Plus className="w-4 h-4" />
           </button>
@@ -105,7 +105,7 @@ function CartLineRemoveButton({
             type="submit"
             className="ml-2 text-sm text-red-600 hover:text-red-800 underline-offset-2 hover:underline focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-1 rounded px-1 disabled:opacity-40 disabled:cursor-not-allowed disabled:hover:no-underline disabled:hover:text-red-600 transition-colors duration-150"
           >
-            <Delete className="w-4 h-4" />
+            <Trash2 className="w-4 h-4" />
           </button>
         );
       }}
