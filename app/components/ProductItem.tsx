@@ -11,24 +11,23 @@ export function ProductItem({
   product,
   loading,
 }: {
-  product:
-    | CollectionItemFragment
-    | ProductItemFragment
-    | RecommendedProductFragment;
+  product: ProductItemFragment;
   loading?: 'eager' | 'lazy';
 }) {
   const variantUrl = useVariantUrl(product.handle);
   const image = product.featuredImage;
+  const secondImage = product.images?.nodes?.[1]; // Second image (index 1)
 
   return (
     <Link
       key={product.id}
       prefetch="intent"
       to={variantUrl}
-      className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 block"
+      className="group bg-brand-cream rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 block"
     >
-      {/* Image container */}
-      <div className="relative overflow-hidden bg-gray-100">
+      {/* Image container with hover swap */}
+      <div className="relative overflow-hidden bg-gray-100 aspect-square">
+        {/* First image (default) */}
         {image && (
           <Image
             alt={image.altText || product.title}
@@ -36,11 +35,23 @@ export function ProductItem({
             data={image}
             loading={loading}
             sizes="(min-width: 45em) 400px, 100vw"
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className={`w-full h-full object-cover transition-opacity duration-300 ${
+              secondImage ? 'group-hover:opacity-0' : ''
+            }`}
           />
         )}
-        {/* Optional sale badge (if you want to add logic later) */}
-        {/* <div className="absolute top-3 left-3 bg-red-500 text-white text-xs font-bold px-2 py-1 rounded-full">Sale</div> */}
+
+        {/* Second image (on hover) */}
+        {secondImage && (
+          <Image
+            alt={secondImage.altText || product.title}
+            aspectRatio="1/1"
+            data={secondImage}
+            loading={loading}
+            sizes="(min-width: 45em) 400px, 100vw"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+          />
+        )}
       </div>
 
       {/* Product info */}

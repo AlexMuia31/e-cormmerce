@@ -85,7 +85,7 @@ const COLLECTION_ITEM_FRAGMENT = `#graphql
       width
       height
     }
-      images(first:10){
+    images(first:10){
       nodes {
         id
         altText
