@@ -521,6 +521,15 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
       width
       height
     }
+    images(first:2){
+      nodes {
+        id
+        url
+        altText
+        width
+        height
+      }
+    }
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {

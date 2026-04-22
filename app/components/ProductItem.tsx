@@ -49,7 +49,7 @@ export function ProductItem({
             data={secondImage}
             loading={loading}
             sizes="(min-width: 45em) 400px, 100vw"
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+            className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500  group-hover:opacity-100"
           />
         )}
       </div>
