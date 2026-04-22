@@ -1,10 +1,6 @@
 import {Link} from 'react-router';
 import {Image, Money} from '@shopify/hydrogen';
-import type {
-  ProductItemFragment,
-  CollectionItemFragment,
-  RecommendedProductFragment,
-} from 'storefrontapi.generated';
+import type {ProductItemFragment} from 'storefrontapi.generated';
 import {useVariantUrl} from '~/lib/variants';
 
 export function ProductItem({
@@ -16,14 +12,14 @@ export function ProductItem({
 }) {
   const variantUrl = useVariantUrl(product.handle);
   const image = product.featuredImage;
-  const secondImage = product.images?.nodes?.[1]; // Second image (index 1)
+  const secondImage = product.images?.nodes?.[1];
 
   return (
     <Link
       key={product.id}
       prefetch="intent"
       to={variantUrl}
-      className="group bg-brand-cream rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 block"
+      className="group bg-brand-cream rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 block relative"
     >
       {/* Image container with hover swap */}
       <div className="relative overflow-hidden bg-gray-100 aspect-square">
@@ -49,9 +45,24 @@ export function ProductItem({
             data={secondImage}
             loading={loading}
             sizes="(min-width: 45em) 400px, 100vw"
-            className="absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500  group-hover:opacity-100"
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-300 opacity-0 group-hover:opacity-100"
           />
         )}
+
+        {/* Hover Overlay with Quick View button */}
+        <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation(); // Important to stop event from reaching Link
+              // Implement your quick view modal here
+              console.log('Quick view for', product.handle);
+            }}
+            className="bg-white text-gray-900 px-6 py-2.5 rounded-full font-medium text-sm hover:bg-gray-100 transition-colors shadow-lg transform transition-transform duration-200 group-hover:scale-105"
+          >
+            Quick View
+          </button>
+        </div>
       </div>
 
       {/* Product info */}
