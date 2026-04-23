@@ -56,9 +56,8 @@ export function ProductItem({
               e.preventDefault();
               e.stopPropagation(); // Important to stop event from reaching Link
               // Implement your quick view modal here
-              console.log('Quick view for', product.handle);
             }}
-            className="bg-white text-gray-900 px-6 py-2.5 rounded-full font-medium text-sm hover:bg-gray-100 transition-colors shadow-lg transform transition-transform duration-200 group-hover:scale-105"
+            className="bg-white text-gray-900 px-6 py-2.5 rounded-full font-medium text-sm hover:bg-gray-100 transition-colors shadow-lg transform duration-200 group-hover:scale-105"
           >
             Quick View
           </button>
