@@ -26,7 +26,13 @@ export function ProductImage({
   // Merge variant image at front, deduplicate by URL
   const allImages: GalleryImage[] = selectedVariantImage
     ? [
-        selectedVariantImage,
+        {
+          id: selectedVariantImage.id ?? null,
+          url: selectedVariantImage.url,
+          altText: selectedVariantImage.altText ?? null,
+          width: selectedVariantImage.width ?? null,
+          height: selectedVariantImage.height ?? null,
+        },
         ...images.filter((img) => img.url !== selectedVariantImage.url),
       ]
     : images;
@@ -87,7 +93,7 @@ export function ProductImage({
           data={currentImage}
           key={currentImage.id ?? currentImage.url}
           sizes="(min-width: 45em) 50vw, 100vw"
-          className="w-full h-full object-contain transition-opacity duration-300 [mix-blend-mode:multiply]"
+          className="w-full h-full object-contain transition-opacity duration-300 mix-blend-multiply"
         />
 
         {/* Prev / Next arrows */}
@@ -147,7 +153,7 @@ export function ProductImage({
                 aspectRatio="1/1"
                 data={img}
                 sizes="64px"
-                className="w-full h-full object-cover [mix-blend-mode:multiply] bg-[#ede9e2]"
+                className="w-full h-full object-cover mix-blend-multiply bg-[#ede9e2]"
               />
             </button>
           ))}
