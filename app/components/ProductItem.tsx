@@ -50,18 +50,7 @@ export function ProductItem({
         )}
 
         {/* Hover Overlay with Quick View button */}
-        <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
-          <button
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation(); // Important to stop event from reaching Link
-              // Implement your quick view modal here
-            }}
-            className="bg-white text-gray-900 px-6 py-2.5 rounded-full font-medium text-sm hover:bg-gray-100 transition-colors shadow-lg transform duration-200 group-hover:scale-105"
-          >
-            Quick View
-          </button>
-        </div>
+        <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
       </div>
 
       {/* Product info */}
