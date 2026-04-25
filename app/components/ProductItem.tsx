@@ -58,10 +58,10 @@ export function ProductItem({
         <h4 className="font-semibold text-lg text-gray-900 mb-1 line-clamp-2">
           {product.title}
         </h4>
-        <div className="text-xl font-bold">
+        <div className="text-xl font-bold text-amber-700">
           <Money
             data={product.priceRange.minVariantPrice}
-            className="font-source text-gray-600 transition-colors duration-500"
+            className="font-source text-gray-600 group-hover:bg-brand-navy transition-colors duration"
           />
         </div>
       </div>
