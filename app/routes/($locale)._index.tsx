@@ -253,7 +253,7 @@ function CraftsmanshipSection({data}: {data: CraftsmanshipData}) {
             </div>
 
             <Link
-              to="/pages/craftsmanship"
+              to="/pages/our-craft"
               className="inline-flex items-center gap-2 text-gray-900 font-medium border-b-2 border-gray-900 pb-1 hover:gap-3 transition-all"
             >
               Discover our process
@@ -363,7 +363,7 @@ function TestimonialsSection({testimonials}: {testimonials: Testimonial[]}) {
 
         <div className="text-center mt-12">
           <Link
-            to="/pages/reviews"
+            to=""
             className="inline-flex items-center gap-2 text-amber-700 font-medium hover:gap-3 transition-all"
           >
             Read all 500+ reviews
