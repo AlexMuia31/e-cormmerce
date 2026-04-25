@@ -72,7 +72,24 @@ export default function Product() {
         {/* ── Left: sticky image panel ── */}
         <div className="lg:sticky lg:top-20 lg:h-[calc(100vh-5rem)] bg-[#ede9e2] flex items-center justify-center overflow-hidden">
           <div className="w-full h-full flex items-center justify-center p-12 [&_img]:max-w-full [&_img]:max-h-full [&_img]:object-contain [&_img]:mix-blend-multiply [&_img]:transition-transform [&_img]:duration-700 [&_img]:hover:scale-[1.02]">
-            <ProductImage image={selectedVariant?.image} />
+            <ProductImage
+              images={product.images.nodes.map(
+                (node: {
+                  id: any;
+                  url: any;
+                  altText: any;
+                  width: any;
+                  height: any;
+                }) => ({
+                  id: node.id,
+                  url: node.url,
+                  altText: node.altText,
+                  width: node.width,
+                  height: node.height,
+                }),
+              )}
+              selectedVariantImage={undefined}
+            />
           </div>
         </div>
 
@@ -225,6 +242,15 @@ const PRODUCT_FRAGMENT = `#graphql
     description
     encodedVariantExistence
     encodedVariantAvailability
+    images(first:10) {
+      nodes {
+        id
+        altText
+        url
+        width
+        height
+      }
+    }
     options {
       name
       optionValues {
