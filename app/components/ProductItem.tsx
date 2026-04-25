@@ -49,7 +49,7 @@ export function ProductItem({
           />
         )}
 
-        {/* Hover Overlay with Quick View button */}
+        {/* Hover Overlay */}
         <div className="absolute inset-0 bg-black/60 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
       </div>
 
@@ -58,8 +58,11 @@ export function ProductItem({
         <h4 className="font-semibold text-lg text-gray-900 mb-1 line-clamp-2">
           {product.title}
         </h4>
-        <div className="text-xl font-bold text-amber-700">
-          <Money data={product.priceRange.minVariantPrice} />
+        <div className="text-xl font-bold">
+          <Money
+            data={product.priceRange.minVariantPrice}
+            className="font-source text-gray-600 transition-colors duration-500"
+          />
         </div>
       </div>
     </Link>

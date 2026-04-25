@@ -167,7 +167,7 @@ export default function Homepage() {
 // --- Hero Section ---
 function HeroSection({hero}: {hero: HeroData}) {
   return (
-    <section className="relative h-[85vh] min-h-[600px] flex items-center justify-center text-white overflow-hidden">
+    <section className="relative h-[85vh] min-h-150 flex items-center justify-center text-white overflow-hidden">
       {/* Background image with overlay */}
       <div className="absolute inset-0 z-0">
         <img
@@ -175,7 +175,7 @@ function HeroSection({hero}: {hero: HeroData}) {
           alt="Hero background"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-black/30" />
+        <div className="absolute inset-0 bg-linear-to-r from-black/60 via-black/40 to-black/30" />
       </div>
 
       {/* Content */}
@@ -238,7 +238,10 @@ function CraftsmanshipSection({data}: {data: CraftsmanshipData}) {
             {/* Stats grid */}
             <div className="grid grid-cols-2 gap-6 mb-8">
               {data.stats.map((stat, idx) => (
-                <div key={idx} className="border-l-4 border-amber-500 pl-4">
+                <div
+                  key={stat.label}
+                  className="border-l-4 border-amber-500 pl-4"
+                >
                   <div className="text-2xl md:text-3xl font-bold text-gray-900">
                     {stat.value}
                   </div>
@@ -277,11 +280,11 @@ function CraftsmanshipSection({data}: {data: CraftsmanshipData}) {
                 alt="Artisan at work"
                 className="w-full h-auto object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+              <div className="absolute inset-0 bg-linear-to-t from-black/30 to-transparent" />
             </div>
-            <div className="absolute -bottom-6 -left-6 bg-amber-100 rounded-xl p-4 shadow-lg max-w-[180px] backdrop-blur-sm">
+            <div className="absolute -bottom-6 -left-6 bg-amber-100 rounded-xl p-4 shadow-lg max-w-45 backdrop-blur-sm">
               <p className="text-sm font-medium text-amber-800">
-                "True luxury is time well made"
+                True luxury is time well made
               </p>
             </div>
           </div>
@@ -304,8 +307,8 @@ function TestimonialsSection({testimonials}: {testimonials: Testimonial[]}) {
             What Our Customers Say
           </h2>
           <p className="text-gray-600 max-w-2xl mx-auto">
-            Join thousands of happy customers who've discovered the beauty of
-            handmade
+            Join thousands of happy customers who&apos;ve discovered the beauty
+            of handmade
           </p>
         </div>
 
@@ -319,7 +322,7 @@ function TestimonialsSection({testimonials}: {testimonials: Testimonial[]}) {
               <div className="flex gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
                   <svg
-                    key={i}
+                    key={`star-${i}`}
                     className={`w-5 h-5 ${
                       i < testimonial.rating
                         ? 'text-amber-400'
@@ -334,9 +337,9 @@ function TestimonialsSection({testimonials}: {testimonials: Testimonial[]}) {
               </div>
 
               {/* Quote text */}
-              <div className="flex-grow">
+              <div className="grow">
                 <p className="text-gray-700 leading-relaxed mb-6">
-                  "{testimonial.text}"
+                  {testimonial.text}&quot;
                 </p>
               </div>
 
@@ -387,10 +390,11 @@ function TestimonialsSection({testimonials}: {testimonials: Testimonial[]}) {
 function FeaturedCollection({
   collection,
 }: {
-  collection: FeaturedCollectionFragment;
+  collection: FeaturedCollectionFragment & {description?: string | null};
 }) {
   if (!collection) return null;
   const image = collection?.image;
+  const description = collection.description ?? '';
   return (
     <section className="py-16 md:py-24 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -401,7 +405,7 @@ function FeaturedCollection({
               <Image
                 data={image}
                 sizes="100vw"
-                className="w-full h-full object-cover aspect-[4/3] transition-transform duration-700 group-hover:scale-105"
+                className="w-full h-full object-cover aspect-4/3 transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors" />
             </div>
@@ -415,9 +419,11 @@ function FeaturedCollection({
             <h2 className="text-3xl md:text-4xl font-serif font-bold mt-2 mb-4 text-gray-900">
               {collection.title}
             </h2>
-            <p className="text-gray-600 text-lg leading-relaxed mb-6">
-              {collection.description}
-            </p>
+            {description ? (
+              <p className="text-gray-600 text-lg leading-relaxed mb-6">
+                {description}
+              </p>
+            ) : null}
             <Link
               to={`/collections/${collection.handle}`}
               className="inline-block bg-gray-900 text-white px-8 py-3 rounded-full font-medium hover:bg-gray-800 transition-colors shadow-md hover:shadow-lg"
@@ -484,6 +490,7 @@ const FEATURED_COLLECTION_QUERY = `#graphql
   fragment FeaturedCollection on Collection {
     id
     title
+    description
     image {
       id
       url
@@ -504,7 +511,7 @@ const FEATURED_COLLECTION_QUERY = `#graphql
 ` as const;
 
 const RECOMMENDED_PRODUCTS_QUERY = `#graphql
-  fragment RecommendedProduct on Product {
+  fragment ProductItemFragment on Product {
     id
     title
     handle
@@ -535,7 +542,7 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
     @inContext(country: $country, language: $language) {
     products(first: 4, sortKey: UPDATED_AT, reverse: true) {
       nodes {
-        ...RecommendedProduct
+        ...ProductItemFragment
       }
     }
   }
