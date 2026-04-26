@@ -17,16 +17,19 @@ export function ProductForm({
 }) {
   const navigate = useNavigate();
   const {open} = useAside();
+
   return (
-    <div className="product-form">
+    <div className="product-form space-y-8">
       {productOptions.map((option) => {
         // If there is only a single value in the option values, don't display the option
         if (option.optionValues.length === 1) return null;
 
         return (
           <div className="product-options" key={option.name}>
-            <h5>{option.name}</h5>
-            <div className="product-options-grid">
+            <h5 className="text-sm font-medium text-gray-900 mb-3">
+              {option.name}
+            </h5>
+            <div className="product-options-grid flex flex-wrap gap-3">
               {option.optionValues.map((value) => {
                 const {
                   name,
@@ -39,57 +42,48 @@ export function ProductForm({
                   swatch,
                 } = value;
 
+                const commonClasses = `
+                  relative flex items-center justify-center
+                  min-w-[2.5rem] h-10 px-3 rounded-md
+                  text-sm font-medium transition-all duration-200
+                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500
+                  ${selected ? 'ring-2 ring-indigo-600 bg-indigo-50 text-indigo-700' : 'bg-white text-gray-700 border border-gray-300 hover:border-gray-400'}
+                  ${!available ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
+                `;
+
                 if (isDifferentProduct) {
-                  // SEO
-                  // When the variant is a combined listing child product
-                  // that leads to a different url, we need to render it
-                  // as an anchor tag
+                  // For child products that lead to a different URL (SEO anchor)
                   return (
                     <Link
-                      className="product-options-item"
                       key={option.name + name}
+                      to={`/products/${handle}?${variantUriQuery}`}
                       prefetch="intent"
                       preventScrollReset
                       replace
-                      to={`/products/${handle}?${variantUriQuery}`}
-                      style={{
-                        border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
-                        opacity: available ? 1 : 0.3,
-                      }}
+                      className={commonClasses}
+                      aria-disabled={!available}
+                      style={{opacity: available ? 1 : 0.4}}
                     >
                       <ProductOptionSwatch swatch={swatch} name={name} />
                     </Link>
                   );
                 } else {
-                  // SEO
-                  // When the variant is an update to the search param,
-                  // render it as a button with javascript navigating to
-                  // the variant so that SEO bots do not index these as
-                  // duplicated links
+                  // For same‑product variant change (button with JS navigation)
                   return (
                     <button
                       type="button"
-                      className={`product-options-item${
-                        exists && !selected ? ' link' : ''
-                      }`}
                       key={option.name + name}
-                      style={{
-                        border: selected
-                          ? '1px solid black'
-                          : '1px solid transparent',
-                        opacity: available ? 1 : 0.3,
-                      }}
+                      className={commonClasses}
                       disabled={!exists}
                       onClick={() => {
-                        if (!selected) {
+                        if (!selected && exists) {
                           void navigate(`?${variantUriQuery}`, {
                             replace: true,
                             preventScrollReset: true,
                           });
                         }
                       }}
+                      aria-pressed={selected}
                     >
                       <ProductOptionSwatch swatch={swatch} name={name} />
                     </button>
@@ -97,15 +91,13 @@ export function ProductForm({
                 }
               })}
             </div>
-            <br />
           </div>
         );
       })}
+
       <AddToCartButton
         disabled={!selectedVariant || !selectedVariant.availableForSale}
-        onClick={() => {
-          open('cart');
-        }}
+        onClick={() => open('cart')}
         lines={
           selectedVariant
             ? [
@@ -118,12 +110,15 @@ export function ProductForm({
             : []
         }
       >
-        {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+        <div>
+          {selectedVariant?.availableForSale ? 'Add to cart' : 'Sold out'}
+        </div>
       </AddToCartButton>
     </div>
   );
 }
 
+// Optimized swatch component with better visuals
 function ProductOptionSwatch({
   swatch,
   name,
@@ -134,17 +129,22 @@ function ProductOptionSwatch({
   const image = swatch?.image?.previewImage?.url;
   const color = swatch?.color;
 
-  if (!image && !color) return name;
+  // No swatch → show text label (e.g., "Small", "Large")
+  if (!image && !color) {
+    return <span className="truncate">{name}</span>;
+  }
 
+  // Color or image swatch
   return (
     <div
+      className="w-6 h-6 rounded-full shadow-inner border border-gray-200 overflow-hidden"
+      style={{backgroundColor: color || 'transparent'}}
       aria-label={name}
-      className="product-option-label-swatch"
-      style={{
-        backgroundColor: color || 'transparent',
-      }}
+      title={name}
     >
-      {!!image && <img src={image} alt={name} />}
+      {image && (
+        <img src={image} alt={name} className="w-full h-full object-cover" />
+      )}
     </div>
   );
 }
