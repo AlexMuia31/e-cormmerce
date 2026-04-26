@@ -6,7 +6,7 @@ import {ProductItem} from '~/components/ProductItem';
 import type {CollectionItemFragment} from 'storefrontapi.generated';
 
 export const meta: Route.MetaFunction = () => {
-  return [{title: `Hydrogen | Products`}];
+  return [{title: 'Hydrogen | Products'}];
 };
 
 export async function loader(args: Route.LoaderArgs) {
@@ -51,18 +51,32 @@ export default function Collection() {
   const {products} = useLoaderData<typeof loader>();
 
   return (
-    <div className="collection">
-      <h1>Products</h1>
+    <div className="max-w-7xl mx-auto  min-h-[70vh] px-4 sm:px-6 py-8 sm:py-12">
+      {/* Header Section */}
+      <div className="text-center mb-12">
+        <h1 className="text-4xl sm:text-5xl font-bold bg-linear-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent tracking-tight">
+          Our Collection
+        </h1>
+        <p className="text-slate-500 text-lg max-w-md mx-auto mt-3">
+          Discover products crafted with care and precision
+        </p>
+      </div>
+
+      {/* Products Grid - 3 items on desktop */}
       <PaginatedResourceSection<CollectionItemFragment>
         connection={products}
-        resourcesClassName="products-grid"
+        resourcesClassName="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8 auto-rows-fr"
       >
         {({node: product, index}) => (
-          <ProductItem
+          <div
             key={product.id}
-            product={product}
-            loading={index < 8 ? 'eager' : undefined}
-          />
+            className="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300 ease-out hover:-translate-y-1 border border-slate-100 hover:border-slate-200"
+          >
+            <ProductItem
+              product={product}
+              loading={index < 8 ? 'eager' : undefined}
+            />
+          </div>
         )}
       </PaginatedResourceSection>
     </div>
