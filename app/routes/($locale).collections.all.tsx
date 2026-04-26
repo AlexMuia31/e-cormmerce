@@ -53,7 +53,7 @@ export default function Collection() {
   return (
     <div className="max-w-7xl mx-auto  min-h-[70vh] px-4 sm:px-6 py-8 sm:py-12">
       {/* Header Section */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-12 mt-50 sm:mt-20">
         <h1 className="text-4xl sm:text-5xl font-bold bg-linear-to-r from-slate-800 to-slate-600 bg-clip-text text-transparent tracking-tight">
           Our Collection
         </h1>
