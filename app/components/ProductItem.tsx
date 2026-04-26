@@ -61,7 +61,7 @@ export function ProductItem({
         <div className="text-xl font-bold text-amber-700">
           <Money
             data={product.priceRange.minVariantPrice}
-            className="font-source text-gray-600 group-hover:bg-brand-navy transition-colors duration"
+            className="font-source text-gray-600  transition-colors duration"
           />
         </div>
       </div>
